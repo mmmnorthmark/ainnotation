@@ -1,0 +1,376 @@
+/* Layout + component styles for the AInnotation side pane. Colors resolve to
+   Tableau design tokens via the --tp-* aliases in styles/global.css. Built to
+   live in a narrow Desktop side pane, so everything wraps/shrinks. */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* ---- Header ------------------------------------------------------------ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 14px 20px 12px;
+  background: var(--tp-surface);
+  border-bottom: 1px solid var(--tp-border);
+  box-shadow: var(--tp-shadow);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.brand-mark {
+  color: var(--tp-accent);
+  font-size: 18px;
+  line-height: 1;
+}
+.brand-name {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.mode-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mode-badge--desktop {
+  color: var(--tp-ok);
+  background: var(--color-feedback-default-success-light);
+}
+.mode-badge--preview {
+  color: var(--tp-warn);
+  background: var(--color-feedback-default-warning-light);
+}
+.tagline {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--tp-text-muted);
+}
+
+/* ---- Toolbar ----------------------------------------------------------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 20px;
+  background: var(--tp-surface);
+  border-bottom: 1px solid var(--tp-border);
+}
+.target {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.target-sheet {
+  font-weight: 600;
+  font-size: 13px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.target-count {
+  font-size: 11px;
+  color: var(--tp-text-muted);
+  border: 1px solid var(--tp-border);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+.sample-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--tp-text-muted);
+}
+.sample-pick select {
+  padding: 6px 8px;
+  border: 1px solid var(--tp-border);
+  border-radius: var(--tp-radius-sm);
+  background: var(--tp-bg);
+  color: var(--tp-text);
+  font-size: 13px;
+  max-width: 220px;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---- Buttons ----------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--tp-radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tp-text);
+  background: var(--tp-surface-2);
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+.btn:hover { background: var(--tp-border); }
+.btn-primary { color: #fff; background: var(--tp-accent); }
+.btn-primary:hover { background: var(--tp-accent-hover); }
+.btn-ghost { background: transparent; border-color: var(--tp-border); }
+.btn-ghost:hover { background: var(--tp-surface-2); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:disabled:hover { background: var(--tp-surface-2); }
+.btn-primary:disabled:hover { background: var(--tp-accent); }
+
+/* ---- Main + list ------------------------------------------------------- */
+.app-main {
+  flex: 1 1 auto;
+  padding: 16px 20px 28px;
+}
+/* Section grouping: a "Selected marks" block above "Proposed". */
+.ann-section + .ann-section { margin-top: 20px; }
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--tp-border);
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--tp-text-muted);
+}
+.section-count {
+  font-size: 11px;
+  color: var(--tp-text-muted);
+  border: 1px solid var(--tp-border);
+  border-radius: 999px;
+  padding: 0 7px;
+  min-width: 18px;
+  text-align: center;
+}
+.selection-hint {
+  margin: -4px 0 14px;
+  font-size: 12px;
+  color: var(--tp-text-muted);
+}
+/* Friendly note shown when the targeted viz type (e.g. a text table) can't take
+   mark annotations. Informational, not an error — soft accent, not red. */
+.viz-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--tp-accent-weak);
+  border-left: 3px solid var(--tp-accent);
+  border-radius: var(--tp-radius);
+  background: var(--tp-surface-2);
+}
+.viz-note-icon {
+  flex: 0 0 auto;
+  color: var(--tp-accent);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.viz-note-text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--tp-text);
+}
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  color: var(--tp-text-muted);
+}
+.list-head strong { color: var(--tp-text); }
+.list-head-actions { display: inline-flex; gap: 12px; }
+.link-btn {
+  border: none;
+  background: transparent;
+  color: var(--tp-accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 0;
+}
+.link-btn:hover { text-decoration: underline; }
+.empty {
+  padding: 56px 20px;
+  text-align: center;
+  color: var(--tp-text-muted);
+}
+.empty--analyzing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.analyzing-label {
+  margin: 0;
+  font-size: 13px;
+  color: var(--tp-text-muted);
+}
+.ann-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- Annotation card --------------------------------------------------- */
+.ann {
+  border: 1px solid var(--tp-border);
+  border-radius: var(--tp-radius);
+  background: var(--tp-surface);
+  padding: 12px 14px;
+  box-shadow: var(--tp-shadow);
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.ann--on {
+  border-color: var(--tp-accent);
+  box-shadow: 0 0 0 1px var(--tp-accent-weak), var(--tp-shadow);
+}
+.ann-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.ann-head input { flex: 0 0 auto; accent-color: var(--tp-accent); }
+.ann-glyph {
+  flex: 0 0 auto;
+  font-size: 15px;
+  line-height: 1;
+  width: 18px;
+  text-align: center;
+}
+.ann-glyph--max, .ann-glyph--trend { color: var(--tp-ok); }
+.ann-glyph--min, .ann-glyph--outlier-low { color: var(--tp-err); }
+.ann-glyph--outlier-high, .ann-glyph--off-trend { color: var(--tp-warn); }
+.ann-glyph--share, .ann-glyph--mover, .ann-glyph--gap { color: var(--tp-accent); }
+.ann-glyph--changepoint { color: var(--tp-accent); }
+.ann-glyph--mark { color: var(--tp-accent); }
+.ann-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ann-kind {
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tp-text-muted);
+}
+.ann-target {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 8px;
+  padding-left: 26px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--tp-surface-2);
+  border: 1px solid var(--tp-border);
+}
+.chip-k { color: var(--tp-text-muted); }
+.chip--muted { color: var(--tp-text-muted); font-style: italic; }
+.ann-text {
+  width: 100%;
+  resize: vertical;
+  font-family: var(--tp-font);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--tp-text);
+  background: var(--tp-bg);
+  border: 1px solid var(--tp-border);
+  border-radius: var(--tp-radius-sm);
+  padding: 8px 10px;
+}
+.ann-text:focus {
+  outline: none;
+  border-color: var(--tp-accent);
+  box-shadow: 0 0 0 3px var(--tp-accent-weak);
+}
+
+/* ---- Toasts ------------------------------------------------------------ */
+.toast-host {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 380px;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--tp-radius);
+  background: var(--tp-surface);
+  border: 1px solid var(--tp-border);
+  box-shadow: var(--tp-shadow-lg);
+  animation: tp-toast-in 0.18s ease;
+}
+@keyframes tp-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.toast--success { border-left: 3px solid var(--tp-ok); }
+.toast--error { border-left: 3px solid var(--tp-err); }
+.toast--info { border-left: 3px solid var(--tp-accent); }
+.toast--progress { border-left: 3px solid var(--tp-accent); }
+.toast-icon { display: inline-flex; align-items: center; flex: 0 0 auto; }
+.toast--success .toast-icon { color: var(--tp-ok); }
+.toast--error .toast-icon { color: var(--tp-err); }
+.toast--info .toast-icon { color: var(--tp-accent); }
+.toast-msg { flex: 1 1 auto; font-size: 13px; white-space: pre-line; }
+.toast-x {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: var(--tp-text-muted);
+  line-height: 1;
+}
+.toast-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--tp-accent-weak);
+  border-top-color: var(--tp-accent);
+  border-radius: 50%;
+  animation: tp-spin 0.7s linear infinite;
+  flex: 0 0 auto;
+}
+@keyframes tp-spin { to { transform: rotate(360deg); } }

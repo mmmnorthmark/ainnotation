@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AInnotation workspace extension — LOCAL DEV variant. Same as ainnotation.trex
+  but its source-location points at the local Vite dev server (localhost:8770)
+  instead of the hosted Heroku build, so code changes are picked up on reload.
+
+  Dev-load: run `npm run dev` (serves http://localhost:8770), then in Tableau
+  Desktop add a Workspace Extension object and point it at this .trex. Requires a
+  Desktop build launched with workspace extensions enabled.
+-->
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <workspace-extension id="com.mmmnorthmark.extensions.ainnotation" extension-version="0.1.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Analyze the active viz and auto-add rich annotations to its most interesting marks.</description>
+    <author name="mmmnorthmark" email="dev@example.com" organization="mmmnorthmark" website="https://public.tableau.com"/>
+    <min-api-version>1.0</min-api-version>
+    <source-location>
+      <url>http://localhost:8770</url>
+    </source-location>
+    <icon></icon>
+    <!-- Reads summary data and writes mark annotations. "full data" is the only
+         data-access permission the manifest schema enumerates. -->
+    <permissions>
+      <permission>full data</permission>
+    </permissions>
+  </workspace-extension>
+  <resources>
+    <resource id="name">
+      <text locale="en_US">AInnotation</text>
+    </resource>
+  </resources>
+</manifest>

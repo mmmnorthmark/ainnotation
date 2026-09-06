@@ -1,0 +1,99 @@
+/* Semantic theme for the extension.
+
+   These `--color-*` custom properties mirror a small subset of Tableau's
+   design-token color scale — just the ~14 tokens this sample actually uses —
+   inlined here so the project builds with no dependency on any private package
+   registry. The `--tp-*` aliases below map those tokens to the roles the UI
+   references; light/dark flips with the `.tds-dark` class on <html> (see
+   styles/theme.ts). The non-color scale (radius/spacing/font) is defined locally. */
+
+:root {
+  /* Tableau design-token color subset — light theme. */
+  --color-hue-blue-10: #001A28;
+  --color-link-standalone-default-default: #05628A;
+  --color-link-standalone-default-hover: #084968;
+  --color-elevation-surface-default-subtle: #F3F3F3;
+  --color-elevation-surface-default-default: #FFFFFF;
+  --color-elevation-surface-default-hint: #F3F3F37f;
+  --color-elevation-border-default-default: #C9C9C9;
+  --color-font-default-default: #2E2E2E;
+  --color-font-default-secondary: #5C5C5C;
+  --color-font-default-success: #22683E;
+  --color-feedback-default-warning-dark: #4F2100;
+  --color-feedback-default-error-dark: #8E030F;
+  --color-feedback-default-success-light: #CDEFC4;
+  --color-feedback-default-warning-light: #F9E3B6;
+
+  --tp-accent: var(--color-link-standalone-default-default);
+  --tp-accent-hover: var(--color-link-standalone-default-hover);
+  --tp-accent-weak: var(--color-hue-blue-10);
+
+  --tp-bg: var(--color-elevation-surface-default-subtle);
+  --tp-surface: var(--color-elevation-surface-default-default);
+  --tp-surface-2: var(--color-elevation-surface-default-hint);
+  --tp-border: var(--color-elevation-border-default-default);
+  --tp-text: var(--color-font-default-default);
+  --tp-text-muted: var(--color-font-default-secondary);
+  --tp-shadow: 0 1px 3px rgba(16, 22, 34, 0.08), 0 4px 16px rgba(16, 22, 34, 0.06);
+  --tp-shadow-lg: 0 8px 30px rgba(16, 22, 34, 0.18);
+
+  --tp-radius: 10px;
+  --tp-radius-sm: 6px;
+  --tp-gap: 16px;
+
+  --tp-ok: var(--color-font-default-success);
+  --tp-warn: var(--color-feedback-default-warning-dark);
+  --tp-err: var(--color-feedback-default-error-dark);
+
+  --tp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Benton Sans",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Dark theme: only the tokens whose value differs from light are overridden. */
+.tds-dark {
+  --color-link-standalone-default-default: #90D0FE;
+  --color-link-standalone-default-hover: #1AB9FF;
+  --color-elevation-surface-default-subtle: #181818;
+  --color-elevation-surface-default-default: #242424;
+  --color-elevation-surface-default-hint: #181818;
+  --color-elevation-border-default-default: #747474;
+  --color-font-default-default: #F3F3F3;
+  --color-font-default-secondary: #C9C9C9;
+  --color-font-default-success: #91DB8B;
+  --color-feedback-default-warning-dark: #A86403;
+  --color-feedback-default-error-dark: #EA001E;
+
+  /* Deepen elevation shadows in dark mode. */
+  --tp-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.35);
+  --tp-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--tp-font);
+  background: var(--tp-bg);
+  color: var(--tp-text);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a { color: var(--tp-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: var(--tp-border);
+  border-radius: 6px;
+}

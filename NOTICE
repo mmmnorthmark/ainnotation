@@ -1,0 +1,36 @@
+AInnotation
+Copyright 2026 mmmnorthmark
+
+This product includes software developed for use as an unofficial, unsupported
+learning sample. It is licensed under the Apache License, Version 2.0 (see the
+LICENSE file). It is NOT an official Tableau or Salesforce product and is not
+affiliated with, endorsed by, or supported by Tableau or Salesforce.
+
+--------------------------------------------------------------------------------
+Third-party components
+--------------------------------------------------------------------------------
+
+RosaeNLG
+  File: public/vendor/rosaenlg_tiny_en_US.js
+  License: Apache License, Version 2.0
+  Copyright (c) RosaeNLG contributors
+  https://rosaenlg.org/  |  https://github.com/RosaeNLG/rosaenlg
+  Used unmodified as a vendored runtime for natural-language generation.
+
+Tableau Extensions API
+  File: public/vendor/tableau.extensions.1.latest.js
+  Copyright Tableau Software, LLC (a Salesforce company). All rights reserved.
+  This file is the Tableau Extensions API library, redistributed here solely to
+  let this sample load against a Tableau host. It is the property of Tableau
+  Software, LLC and is subject to Tableau's own license terms, NOT the Apache
+  License above. It is included for convenience and attribution only; no license
+  to it is granted by this project.
+
+simple-statistics
+  Installed from npm (see package.json). Licensed under the ISC License.
+  Copyright (c) Tom MacWright and contributors.
+  https://simple-statistics.github.io/
+
+The Tableau look-and-feel in this sample (a small subset of design-token colors
+and a few icons) is reproduced inline in the source; "Tableau" and related marks
+are the property of Tableau Software, LLC.

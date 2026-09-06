@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AInnotation</title>
+    <!--
+      The Tableau Extensions API must load BEFORE the app so `window.tableau`
+      exists when React mounts. Vendored into public/vendor so it works offline
+      inside Tableau Desktop's embedded browser (Qt WebEngine / Chromium).
+
+      This build (apiVersion 1.19.0) exposes `tableau.extensions.workspaceContent`
+      and — on the active sheet — the annotation surface this extension is built
+      on: `annotateMarkAsync` / `getAnnotationsAsync` / `removeAnnotationAsync`
+      (allowlisted host commands CreateAnnotation / GetAnnotations /
+      RemoveAnnotation). See docs/annotation-api.md.
+    -->
+    <script src="/vendor/tableau.extensions.1.latest.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

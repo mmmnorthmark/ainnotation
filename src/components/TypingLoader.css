@@ -1,0 +1,475 @@
+/* Animated chart-glyph loader — a self-contained implementation (geometry +
+ * motion + color variants) in plain global CSS. Palette is the Tableau 10 core
+ * hues plus a few tints; the .lv-N classes recolor a shared geometry. */
+
+/* Scaling sizes the geometry itself (SVG viewBox re-rasterizes crisply; bar
+ * spans grow in px) rather than transform-scaling a cached raster, which would
+ * blur curved edges. --tb-loader-scale defaults to 1 (100%) when unset. */
+.tl-svg {
+  width: calc(14px * var(--tb-loader-scale, 1));
+  height: calc(11px * var(--tb-loader-scale, 1));
+}
+
+.tl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- bar ---- */
+.tl-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(2.5px * var(--tb-loader-scale, 1));
+  height: calc(11px * var(--tb-loader-scale, 1));
+}
+.tl-bar {
+  width: calc(3px * var(--tb-loader-scale, 1));
+  border-radius: calc(1px * var(--tb-loader-scale, 1));
+  transform-origin: bottom;
+  transform: scaleY(0.3);
+  animation: tlUndulate 1s ease-in-out infinite;
+}
+.tl-bar:nth-child(1) { background: #4e79a7; height: calc(6px * var(--tb-loader-scale, 1)); animation-delay: 0s; }
+.tl-bar:nth-child(2) { background: #f28e2b; height: calc(9px * var(--tb-loader-scale, 1)); animation-delay: 0.15s; }
+.tl-bar:nth-child(3) { background: #59a14f; height: calc(11px * var(--tb-loader-scale, 1)); animation-delay: 0.3s; }
+@keyframes tlUndulate {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* ---- line ---- */
+.tl-line { display: inline-flex; align-items: center; }
+.tl-line svg { overflow: visible; }
+.tl-line-path {
+  fill: none;
+  stroke: #4e79a7;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 17;
+  stroke-dashoffset: 17;
+  animation: tlLineDraw 1.8s linear infinite;
+}
+.tl-line-dot { transform-box: fill-box; transform-origin: center; fill: #6f97c4; }
+.tl-line-dot:nth-child(2) { animation: tlLineDot1 1.8s ease-out infinite; }
+.tl-line-dot:nth-child(3) { animation: tlLineDot2 1.8s ease-out infinite; }
+.tl-line-dot:nth-child(4) { animation: tlLineDot3 1.8s ease-out infinite; }
+.tl-line-dot:nth-child(5) { animation: tlLineDot4 1.8s ease-out infinite; }
+@keyframes tlLineDraw {
+  0% { stroke-dashoffset: 17; }
+  45% { stroke-dashoffset: 0; }
+  55% { stroke-dashoffset: 0; }
+  95% { stroke-dashoffset: 17; }
+  100% { stroke-dashoffset: 17; }
+}
+@keyframes tlLineDot1 {
+  0% { transform: scale(0); opacity: 0; }
+  5% { transform: scale(1); opacity: 1; }
+  92% { transform: scale(1); opacity: 1; }
+  97% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlLineDot2 {
+  0%, 11% { transform: scale(0); opacity: 0; }
+  18% { transform: scale(1); opacity: 1; }
+  80% { transform: scale(1); opacity: 1; }
+  85% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlLineDot3 {
+  0%, 24% { transform: scale(0); opacity: 0; }
+  31% { transform: scale(1); opacity: 1; }
+  70% { transform: scale(1); opacity: 1; }
+  75% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlLineDot4 {
+  0%, 45% { transform: scale(0); opacity: 0; }
+  52% { transform: scale(1); opacity: 1; }
+  56% { transform: scale(1); opacity: 1; }
+  61% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* ---- scatter (also scatterPlus / scatterSquare) ---- */
+.tl-scatter { display: inline-flex; align-items: center; margin-left: -1px; }
+.tl-dot { transform-box: fill-box; transform-origin: center; }
+.tl-dot:nth-child(1) { fill: #4e79a7; animation: tlScatterBlue 1.8s ease-in-out infinite; }
+.tl-dot:nth-child(2) { fill: #f28e2b; animation: tlScatterOrange 1.8s ease-in-out infinite; }
+.tl-dot:nth-child(3) { fill: #59a14f; animation: tlScatterGreen 1.8s ease-in-out infinite; }
+.tl-dot:nth-child(4) { fill: #e15759; animation: tlScatterRed 1.8s ease-in-out infinite; }
+@keyframes tlScatterBlue {
+  0% { transform: scale(0); opacity: 0; }
+  5% { transform: scale(1); opacity: 1; }
+  85% { transform: scale(1); opacity: 1; }
+  90% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlScatterOrange {
+  0%, 10% { transform: scale(0); opacity: 0; }
+  15% { transform: scale(1); opacity: 1; }
+  75% { transform: scale(1); opacity: 1; }
+  80% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlScatterGreen {
+  0%, 20% { transform: scale(0); opacity: 0; }
+  25% { transform: scale(1); opacity: 1; }
+  65% { transform: scale(1); opacity: 1; }
+  70% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlScatterRed {
+  0%, 30% { transform: scale(0); opacity: 0; }
+  35% { transform: scale(1); opacity: 1; }
+  55% { transform: scale(1); opacity: 1; }
+  60% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* ---- area ---- */
+.tl-area { display: inline-flex; align-items: center; }
+.tl-area svg { overflow: visible; }
+.tl-area-line { stroke: #f28e2b; }
+.tl-area-fill {
+  fill: #f28e2b;
+  opacity: 0.28;
+  transform-box: fill-box;
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: tlAreaFill 1.8s linear infinite;
+}
+.tl-area-dot { transform-box: fill-box; transform-origin: center; fill: #f7b46b; }
+.tl-area-dot:nth-child(3) { animation: tlLineDot1 1.8s ease-out infinite; }
+.tl-area-dot:nth-child(4) { animation: tlLineDot2 1.8s ease-out infinite; }
+.tl-area-dot:nth-child(5) { animation: tlLineDot3 1.8s ease-out infinite; }
+.tl-area-dot:nth-child(6) { animation: tlLineDot4 1.8s ease-out infinite; }
+@keyframes tlAreaFill {
+  0% { transform: scaleX(0); }
+  45% { transform: scaleX(1); }
+  55% { transform: scaleX(1); }
+  95% { transform: scaleX(0); }
+  100% { transform: scaleX(0); }
+}
+
+/* ---- pie ---- */
+.tl-pie { display: inline-flex; align-items: center; }
+.tl-pie svg { overflow: visible; }
+.tl-pie-base { fill: #4e79a7; stroke: none; }
+.tl-pie-wedge {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: butt;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+}
+.tl-pie-o { stroke: #f28e2b; animation: tlPieOrange 2.16s linear infinite; }
+.tl-pie-g { stroke: #59a14f; animation: tlPieGreen 2.16s linear infinite; }
+.tl-pie-r { stroke: #e15759; animation: tlPieRed 2.16s linear infinite; }
+.tl-pie-b { stroke: #4e79a7; animation: tlPieBlue 2.16s linear infinite; }
+@keyframes tlPieOrange {
+  0% { stroke-dashoffset: 100; }
+  16.67% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 50; }
+}
+@keyframes tlPieGreen {
+  0%, 16.67% { stroke-dashoffset: 100; }
+  33.33% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 50; }
+}
+@keyframes tlPieRed {
+  0%, 33.33% { stroke-dashoffset: 100; }
+  50% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 50; }
+}
+@keyframes tlPieBlue {
+  0%, 50% { stroke-dashoffset: 100; }
+  83.33% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ---- treemap ---- */
+.tl-treemap { display: inline-flex; align-items: center; }
+.tl-tm { transform-box: fill-box; transform-origin: center; rx: 0.4; }
+.tl-tm-a { fill: #6b9ac4; animation: tlTmA 1.8s ease-in-out infinite; }
+.tl-tm-c { fill: #8fb4d6; animation: tlTmC 1.8s ease-in-out infinite; }
+.tl-tm-e { fill: #f2a693; animation: tlTmE 1.8s ease-in-out infinite; }
+.tl-tm-f { fill: #e15759; animation: tlTmF 1.8s ease-in-out infinite; }
+.tl-tm-g { fill: #a7c3de; animation: tlTmG 1.8s ease-in-out infinite; }
+.tl-tm-d { fill: #4e79a7; animation: tlTmD 1.8s ease-in-out infinite; }
+@keyframes tlTmA {
+  0% { transform: scale(0); opacity: 0; }
+  5%, 87% { transform: scale(1); opacity: 1; }
+  92%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlTmC {
+  0%, 11% { transform: scale(0); opacity: 0; }
+  16%, 81% { transform: scale(1); opacity: 1; }
+  86%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlTmE {
+  0%, 17% { transform: scale(0); opacity: 0; }
+  22%, 75% { transform: scale(1); opacity: 1; }
+  80%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlTmF {
+  0%, 23% { transform: scale(0); opacity: 0; }
+  28%, 69% { transform: scale(1); opacity: 1; }
+  74%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlTmG {
+  0%, 29% { transform: scale(0); opacity: 0; }
+  34%, 63% { transform: scale(1); opacity: 1; }
+  68%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes tlTmD {
+  0%, 35% { transform: scale(0); opacity: 0; }
+  40%, 57% { transform: scale(1); opacity: 1; }
+  62%, 100% { transform: scale(0); opacity: 0; }
+}
+
+/* ---- sankey ---- */
+.tl-sankey { display: inline-flex; align-items: center; }
+.tl-sk-link {
+  fill: none;
+  stroke-linecap: butt;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+}
+.tl-sk-link-a { stroke: #89b2d3; stroke-width: 4; opacity: 0.6; animation: tlSkBandA 2.4s linear infinite; }
+.tl-sk-link-b { stroke: #f4b58e; stroke-width: 2.4; opacity: 0.6; animation: tlSkBandB 2.4s linear infinite; }
+.tl-sk-bar { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); }
+.tl-sk-lt { fill: #6b9ac4; animation: tlSkLT 2.4s ease-out infinite; }
+.tl-sk-lb { fill: #4e79a7; animation: tlSkLB 2.4s ease-out infinite; }
+.tl-sk-rt { fill: #f28e2b; animation: tlSkRT 2.4s ease-out infinite; }
+.tl-sk-rb { fill: #8fb4d6; animation: tlSkRB 2.4s ease-out infinite; }
+@keyframes tlSkLB {
+  0% { transform: scaleY(0); }
+  6% { transform: scaleY(1); }
+  84% { transform: scaleY(1); }
+  90% { transform: scaleY(0); }
+  100% { transform: scaleY(0); }
+}
+@keyframes tlSkLT {
+  0%, 5% { transform: scaleY(0); }
+  11% { transform: scaleY(1); }
+  79% { transform: scaleY(1); }
+  85% { transform: scaleY(0); }
+  100% { transform: scaleY(0); }
+}
+@keyframes tlSkRB {
+  0%, 29% { transform: scaleY(0); }
+  35% { transform: scaleY(1); }
+  55% { transform: scaleY(1); }
+  61% { transform: scaleY(0); }
+  100% { transform: scaleY(0); }
+}
+@keyframes tlSkRT {
+  0%, 34% { transform: scaleY(0); }
+  40% { transform: scaleY(1); }
+  50% { transform: scaleY(1); }
+  56% { transform: scaleY(0); }
+  100% { transform: scaleY(0); }
+}
+@keyframes tlSkBandA {
+  0%, 12% { stroke-dashoffset: 100; }
+  28% { stroke-dashoffset: 0; }
+  62% { stroke-dashoffset: 0; }
+  78% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 100; }
+}
+@keyframes tlSkBandB {
+  0%, 14% { stroke-dashoffset: 100; }
+  30% { stroke-dashoffset: 0; }
+  60% { stroke-dashoffset: 0; }
+  76% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 100; }
+}
+
+/* ---- donut (reuses the pie wedge keyframes) ---- */
+.tl-donut { display: inline-flex; align-items: center; }
+.tl-donut svg { overflow: visible; }
+.tl-donut-base { fill: none; stroke: #6b9ac4; stroke-width: 3.2; }
+.tl-donut-ring {
+  fill: none;
+  stroke-width: 3.2;
+  stroke-linecap: butt;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+}
+.tl-donut-o { stroke: #f28e2b; animation: tlPieOrange 2.16s linear infinite; }
+.tl-donut-g { stroke: #59a14f; animation: tlPieGreen 2.16s linear infinite; }
+.tl-donut-r { stroke: #e15759; animation: tlPieRed 2.16s linear infinite; }
+.tl-donut-b { stroke: #6b9ac4; animation: tlPieBlue 2.16s linear infinite; }
+
+/* ---- hbar ---- */
+.tl-hbar { display: inline-flex; align-items: center; }
+.tl-hbar-track { fill: #e4e6e9; }
+.tl-hbar-fill {
+  transform-box: fill-box;
+  transform-origin: left;
+  transform: scaleX(0.35);
+  animation: tlHbarGrow 1.2s ease-in-out infinite;
+}
+.tl-hbar-fill.hb-a { fill: #4e79a7; animation-delay: 0s; }
+.tl-hbar-fill.hb-b { fill: #f28e2b; animation-delay: 0.15s; }
+.tl-hbar-fill.hb-c { fill: #59a14f; animation-delay: 0.3s; }
+.tl-hbar-ref {
+  fill: #545862;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tlHbarRef 1.2s ease-in-out infinite;
+}
+.tl-hbar-ref.hb-a { animation-delay: 0s; }
+.tl-hbar-ref.hb-b { animation-delay: 0.15s; }
+.tl-hbar-ref.hb-c { animation-delay: 0.3s; }
+@keyframes tlHbarGrow {
+  0%, 100% { transform: scaleX(0.35); }
+  50% { transform: scaleX(1); }
+}
+@keyframes tlHbarRef {
+  0%, 100% { transform: translateX(-2px); }
+  50% { transform: translateX(0.8px); }
+}
+
+/* ---- color variants (recolor only) ---- */
+.tl-chart.lv-2 .tl-bar:nth-child(1) { background: #f28e2b; }
+.tl-chart.lv-2 .tl-bar:nth-child(2) { background: #59a14f; }
+.tl-chart.lv-2 .tl-bar:nth-child(3) { background: #e15759; }
+.tl-chart.lv-3 .tl-bar:nth-child(1) { background: #59a14f; }
+.tl-chart.lv-3 .tl-bar:nth-child(2) { background: #e15759; }
+.tl-chart.lv-3 .tl-bar:nth-child(3) { background: #4e79a7; }
+.tl-chart.lv-4 .tl-bar:nth-child(1) { background: #e15759; }
+.tl-chart.lv-4 .tl-bar:nth-child(2) { background: #4e79a7; }
+.tl-chart.lv-4 .tl-bar:nth-child(3) { background: #f28e2b; }
+
+.tl-line.lv-2 .tl-line-path { stroke: #f28e2b; }
+.tl-line.lv-2 .tl-line-dot { fill: #f7b46b; }
+.tl-line.lv-3 .tl-line-path { stroke: #59a14f; }
+.tl-line.lv-3 .tl-line-dot { fill: #59a14f; }
+.tl-line.lv-4 .tl-line-path { stroke: #e15759; }
+.tl-line.lv-4 .tl-line-dot { fill: #f2a693; }
+
+.tl-scatter.lv-2 .tl-dot:nth-child(1) { fill: #f28e2b; }
+.tl-scatter.lv-2 .tl-dot:nth-child(2) { fill: #59a14f; }
+.tl-scatter.lv-2 .tl-dot:nth-child(3) { fill: #e15759; }
+.tl-scatter.lv-2 .tl-dot:nth-child(4) { fill: #4e79a7; }
+.tl-scatter.lv-3 .tl-dot:nth-child(1) { fill: #59a14f; }
+.tl-scatter.lv-3 .tl-dot:nth-child(2) { fill: #e15759; }
+.tl-scatter.lv-3 .tl-dot:nth-child(3) { fill: #4e79a7; }
+.tl-scatter.lv-3 .tl-dot:nth-child(4) { fill: #f28e2b; }
+.tl-scatter.lv-4 .tl-dot:nth-child(1) { fill: #e15759; }
+.tl-scatter.lv-4 .tl-dot:nth-child(2) { fill: #4e79a7; }
+.tl-scatter.lv-4 .tl-dot:nth-child(3) { fill: #f28e2b; }
+.tl-scatter.lv-4 .tl-dot:nth-child(4) { fill: #59a14f; }
+
+.tl-area.lv-2 .tl-area-line { stroke: #59a14f; }
+.tl-area.lv-2 .tl-area-fill { fill: #59a14f; }
+.tl-area.lv-2 .tl-area-dot { fill: #59a14f; }
+.tl-area.lv-3 .tl-area-line { stroke: #e15759; }
+.tl-area.lv-3 .tl-area-fill { fill: #e15759; }
+.tl-area.lv-3 .tl-area-dot { fill: #f2a693; }
+.tl-area.lv-4 .tl-area-line { stroke: #4e79a7; }
+.tl-area.lv-4 .tl-area-fill { fill: #4e79a7; }
+.tl-area.lv-4 .tl-area-dot { fill: #6f97c4; }
+
+.tl-pie.lv-2 .tl-pie-base { fill: #f28e2b; }
+.tl-pie.lv-2 .tl-pie-o { stroke: #59a14f; }
+.tl-pie.lv-2 .tl-pie-g { stroke: #e15759; }
+.tl-pie.lv-2 .tl-pie-r { stroke: #4e79a7; }
+.tl-pie.lv-2 .tl-pie-b { stroke: #f28e2b; }
+.tl-pie.lv-3 .tl-pie-base { fill: #59a14f; }
+.tl-pie.lv-3 .tl-pie-o { stroke: #e15759; }
+.tl-pie.lv-3 .tl-pie-g { stroke: #4e79a7; }
+.tl-pie.lv-3 .tl-pie-r { stroke: #f28e2b; }
+.tl-pie.lv-3 .tl-pie-b { stroke: #59a14f; }
+.tl-pie.lv-4 .tl-pie-base { fill: #e15759; }
+.tl-pie.lv-4 .tl-pie-o { stroke: #4e79a7; }
+.tl-pie.lv-4 .tl-pie-g { stroke: #f28e2b; }
+.tl-pie.lv-4 .tl-pie-r { stroke: #59a14f; }
+.tl-pie.lv-4 .tl-pie-b { stroke: #e15759; }
+
+.tl-treemap.lv-2 .tl-tm-a { fill: #f4b58e; }
+.tl-treemap.lv-2 .tl-tm-g { fill: #f7b46b; }
+.tl-treemap.lv-2 .tl-tm-d { fill: #f28e2b; }
+.tl-treemap.lv-2 .tl-tm-c { fill: #f2a693; }
+.tl-treemap.lv-2 .tl-tm-e { fill: #89b2d3; }
+.tl-treemap.lv-2 .tl-tm-f { fill: #59a14f; }
+.tl-treemap.lv-3 .tl-tm-a { fill: #e15759; }
+.tl-treemap.lv-3 .tl-tm-g { fill: #f4b58e; }
+.tl-treemap.lv-3 .tl-tm-d { fill: #f2a693; }
+.tl-treemap.lv-3 .tl-tm-c { fill: #f28e2b; }
+.tl-treemap.lv-3 .tl-tm-e { fill: #6b9ac4; }
+.tl-treemap.lv-3 .tl-tm-f { fill: #89b2d3; }
+.tl-treemap.lv-4 .tl-tm-a { fill: #59a14f; }
+.tl-treemap.lv-4 .tl-tm-g { fill: #8fb4d6; }
+.tl-treemap.lv-4 .tl-tm-d { fill: #6b9ac4; }
+.tl-treemap.lv-4 .tl-tm-c { fill: #89b2d3; }
+.tl-treemap.lv-4 .tl-tm-e { fill: #f28e2b; }
+.tl-treemap.lv-4 .tl-tm-f { fill: #f2a693; }
+
+.tl-sankey.lv-2 .tl-sk-link-a { stroke: #f4b58e; }
+.tl-sankey.lv-2 .tl-sk-link-b { stroke: #89b2d3; }
+.tl-sankey.lv-2 .tl-sk-lt { fill: #f4b58e; }
+.tl-sankey.lv-2 .tl-sk-lb { fill: #f28e2b; }
+.tl-sankey.lv-2 .tl-sk-rt { fill: #59a14f; }
+.tl-sankey.lv-2 .tl-sk-rb { fill: #6b9ac4; }
+.tl-sankey.lv-3 .tl-sk-link-a { stroke: #89b2d3; }
+.tl-sankey.lv-3 .tl-sk-link-b { stroke: #f4b58e; }
+.tl-sankey.lv-3 .tl-sk-lt { fill: #59a14f; }
+.tl-sankey.lv-3 .tl-sk-lb { fill: #4e79a7; }
+.tl-sankey.lv-3 .tl-sk-rt { fill: #e15759; }
+.tl-sankey.lv-3 .tl-sk-rb { fill: #8fb4d6; }
+.tl-sankey.lv-4 .tl-sk-link-a { stroke: #f4b58e; }
+.tl-sankey.lv-4 .tl-sk-link-b { stroke: #89b2d3; }
+.tl-sankey.lv-4 .tl-sk-lt { fill: #f2a693; }
+.tl-sankey.lv-4 .tl-sk-lb { fill: #e15759; }
+.tl-sankey.lv-4 .tl-sk-rt { fill: #4e79a7; }
+.tl-sankey.lv-4 .tl-sk-rb { fill: #a7c3de; }
+
+.tl-donut.lv-2 .tl-donut-base { stroke: #f4b58e; }
+.tl-donut.lv-2 .tl-donut-o { stroke: #59a14f; }
+.tl-donut.lv-2 .tl-donut-g { stroke: #e15759; }
+.tl-donut.lv-2 .tl-donut-r { stroke: #4e79a7; }
+.tl-donut.lv-2 .tl-donut-b { stroke: #f4b58e; }
+.tl-donut.lv-3 .tl-donut-base { stroke: #8fb4d6; }
+.tl-donut.lv-3 .tl-donut-o { stroke: #e15759; }
+.tl-donut.lv-3 .tl-donut-g { stroke: #4e79a7; }
+.tl-donut.lv-3 .tl-donut-r { stroke: #f28e2b; }
+.tl-donut.lv-3 .tl-donut-b { stroke: #8fb4d6; }
+.tl-donut.lv-4 .tl-donut-base { stroke: #f2a693; }
+.tl-donut.lv-4 .tl-donut-o { stroke: #4e79a7; }
+.tl-donut.lv-4 .tl-donut-g { stroke: #f28e2b; }
+.tl-donut.lv-4 .tl-donut-r { stroke: #59a14f; }
+.tl-donut.lv-4 .tl-donut-b { stroke: #f2a693; }
+
+.tl-hbar.lv-2 .tl-hbar-fill.hb-a { fill: #f28e2b; }
+.tl-hbar.lv-2 .tl-hbar-fill.hb-b { fill: #59a14f; }
+.tl-hbar.lv-2 .tl-hbar-fill.hb-c { fill: #e15759; }
+.tl-hbar.lv-3 .tl-hbar-fill.hb-a { fill: #59a14f; }
+.tl-hbar.lv-3 .tl-hbar-fill.hb-b { fill: #e15759; }
+.tl-hbar.lv-3 .tl-hbar-fill.hb-c { fill: #4e79a7; }
+.tl-hbar.lv-4 .tl-hbar-fill.hb-a { fill: #e15759; }
+.tl-hbar.lv-4 .tl-hbar-fill.hb-b { fill: #4e79a7; }
+.tl-hbar.lv-4 .tl-hbar-fill.hb-c { fill: #f28e2b; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-bar { animation: none; transform: scaleY(0.6); }
+  .tl-line-path { animation: none; stroke-dashoffset: 0; }
+  .tl-line-dot, .tl-dot, .tl-area-dot { animation: none; transform: scale(0.85); opacity: 0.85; }
+  .tl-area-fill { animation: none; transform: scaleX(1); }
+  .tl-pie-wedge { animation: none; stroke-dashoffset: 100; }
+  .tl-tm { animation: none; transform: scale(1); opacity: 0.9; }
+  .tl-sk-bar { animation: none; transform: scaleY(1); }
+  .tl-sk-link { animation: none; stroke-dashoffset: 0; }
+  .tl-donut-ring { animation: none; stroke-dashoffset: 100; }
+  .tl-hbar-fill { animation: none; transform: scaleX(0.7); }
+  .tl-hbar-ref { animation: none; transform: translateX(0); }
+}

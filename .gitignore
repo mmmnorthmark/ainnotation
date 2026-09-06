@@ -1,0 +1,13 @@
+node_modules/
+dist/
+build/
+*.log
+.DS_Store
+.canvas/
+.env
+.env.local
+*.tsbuildinfo
+
+# Defensive: never commit a scoped-registry config, even if one is created
+# locally. (This sample resolves entirely from the public npm registry.)
+.npmrc
