@@ -61,18 +61,23 @@ exercised; Apply is simulated.
 ## Dev-loading into Tableau Desktop
 
 Workspace Extensions are gated behind a feature flag and auto-scanned from the
-Extensions folder:
+Extensions folder. Two manifests are provided:
+
+- `extensions/ainnotation.trex` — `source-location` points at the **hosted
+  build** (no dev server needed; just copy it and go).
+- `extensions/ainnotation-local.trex` — `source-location` points at the **dev
+  server** (`http://localhost:8770`); use this while running `npm run dev`.
 
 ```bash
-cp extensions/ainnotation.trex \
+# Local dev (with `npm run dev` running):
+cp extensions/ainnotation-local.trex \
    "$HOME/Documents/My Tableau Repository/Extensions/"
 
 open -na "/Applications/Tableau Desktop (Apple silicon) main.app" \
   --args -DInDesktopWorkspaceExtensions=true "<some-workbook.twbx>"
 ```
 
-Open the pane from the **Extensions** menu → the extension's **Show**. The
-`.trex` points `source-location` at the dev server (`http://localhost:8770`).
+Open the pane from the **Extensions** menu → the extension's **Show**.
 Select a **worksheet** — or a **dashboard**, in which case a picker lets you
 choose which contained worksheet to annotate — then press **Re-analyze** → check
 the annotations you want → **Apply selected**. (Stories have no annotatable
@@ -179,5 +184,5 @@ viz-extension) that do work or are unverified.
 | `src/App.tsx` | Analyze → propose → select → apply state machine (desktop + preview): one list with a reactive Selected-marks section, viz-type gating |
 | `src/styles/` | Design-token theme wiring (light/dark) |
 | `public/vendor/` | Vendored `tableau.extensions.1.latest.js` + lazy-loaded `rosaenlg_tiny_en_US.js` |
-| `extensions/ainnotation.trex` | Dev-load manifest |
+| `extensions/*.trex` | Load manifests — hosted (`ainnotation.trex`) and local dev (`ainnotation-local.trex`) |
 | `docs/annotation-api.md` | The annotation command surface + API reality |
